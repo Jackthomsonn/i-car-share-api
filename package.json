@@ -1,0 +1,28 @@
+{
+  "name": "hitch-hike-api",
+  "version": "0.0.1",
+  "description": "The Official Hitch-Hike API",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc --watch",
+    "build:prod": "tsc",
+    "test": "npm test",
+    "docker:start": "docker-compose up --build -d",
+    "docker:stop": "cli-confirm \"Stopping the docker server will remove everything including any data. Are you sure you wish to do this?\" && docker-compose down"
+  },
+  "author": "Jack Thomson <hello@jackthomson.co.uk> (http://www.jackthomson.co.uk)",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dynamic-route-generator": "^1.5.1",
+    "express": "^4.16.4",
+    "mongoose": "^5.4.20",
+    "x-auth-plugin": "0.4.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.4",
+    "@types/express": "^4.16.1",
+    "@types/mongoose": "^5.3.21",
+    "cli-confirm": "^1.0.1"
+  }
+}
