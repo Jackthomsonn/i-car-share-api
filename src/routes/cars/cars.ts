@@ -1,8 +1,8 @@
+import { NextFunction, Request, Response } from 'express-serve-static-core';
+import { models, Schema, SchemaOptions, SchemaTypes, Types } from 'mongoose';
+import { userInformationDefintion } from '../../definitions/user-information/user-information.definition';
+import { Method } from '../../enums/methods';
 import { BaseRoute } from '../base-route';
-import { Schema, SchemaOptions, Types } from 'mongoose';
-import { SchemaTypes } from 'mongoose'
-import { Request, Response, NextFunction } from 'express-serve-static-core';
-import mongoose from 'mongoose'
 
 export class CarsRoute extends BaseRoute {
   constructor(uri: string, methods: any[]) {
@@ -36,11 +36,11 @@ export class CarsRoute extends BaseRoute {
 
   setHandlers() {
     this.methods.forEach(method => {
-      if (method.name === 'get') {
+      if (method.name === Method.GET) {
         method.handlers = [...method.handlers || [], this.aggregateData]
       }
 
-      if (method.name === 'post') {
+      if (method.name === Method.POST) {
         method.handlers = [...method.handlers || [], this.verifyUserExists]
       }
     })
@@ -52,8 +52,8 @@ export class CarsRoute extends BaseRoute {
     }
 
     try {
-      const aggregatedData = await mongoose.models.Cars.aggregate([
-        { $match: { ownerId: mongoose.Types.ObjectId(req.query.ownerId) } },
+      const aggregatedData = await models.Cars.aggregate([
+        { $match: { ownerId: Types.ObjectId(req.query.ownerId) } },
         {
           $lookup: {
             from: 'users',
@@ -70,10 +70,7 @@ export class CarsRoute extends BaseRoute {
         reg: 1,
         rules: 1,
         ownerId: 1,
-        userInformation: {
-          _id: 1,
-          username: 1
-        },
+        userInformation: userInformationDefintion,
         passengers: 1,
         createdAt: 1,
         updatedAt: 1

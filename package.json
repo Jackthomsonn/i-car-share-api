@@ -1,7 +1,7 @@
 {
-  "name": "hitch-hike-api",
+  "name": "i-car-share-api",
   "version": "0.0.1",
-  "description": "The Official Hitch-Hike API",
+  "description": "The Official ICarShare API",
   "main": "index.js",
   "scripts": {
     "build": "tsc --watch",
@@ -13,16 +13,22 @@
   "author": "Jack Thomson <hello@jackthomson.co.uk> (http://www.jackthomson.co.uk)",
   "license": "ISC",
   "dependencies": {
+    "@types/node-pushnotifications": "^1.0.0",
     "cors": "^2.8.5",
     "dynamic-route-generator": "^1.5.1",
     "express": "^4.16.4",
-    "mongoose": "^5.4.20",
+    "mongoose": "^5.4.22",
+    "node-pushnotifications": "^1.1.8",
+    "request": "^2.88.0",
+    "socket.io": "^2.2.0",
     "x-auth-plugin": "0.4.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.4",
     "@types/express": "^4.16.1",
     "@types/mongoose": "^5.3.21",
+    "@types/request": "^2.48.1",
+    "@types/socket.io": "^2.1.2",
     "cli-confirm": "^1.0.1"
   }
 }

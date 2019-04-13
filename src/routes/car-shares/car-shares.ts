@@ -1,11 +1,12 @@
+import { ObjectId } from 'bson';
+import { NextFunction, Request, Response } from 'express-serve-static-core';
+import { models, Schema, SchemaOptions, SchemaTypes, Types } from 'mongoose';
+import { ownerInformationDefintion } from '../../definitions/owner-information/owner-information.definition';
+import { Method } from '../../enums/methods';
+import { BaseRoute } from '../base-route';
+import { carInformationDefinition } from './../../definitions/car-information/car-information.definition';
 import { Exceptions } from './../../enums/exceptions';
 import { PointSchema } from './../../schemas/point/point-schema';
-import { Request, Response, NextFunction } from 'express-serve-static-core';
-import { BaseRoute } from '../base-route';
-import { Schema, SchemaOptions, Types } from 'mongoose';
-import { SchemaTypes } from 'mongoose'
-import mongoose from 'mongoose'
-import { ObjectId } from 'bson';
 
 const { NotFound, InternalServerError } = require('dynamic-route-generator')
 
@@ -37,26 +38,27 @@ export class CarSharesRoute extends BaseRoute {
         required: true
       },
       runningDays: {
-        type: SchemaTypes.Array,
+        type: SchemaTypes.String,
+        enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
         required: true
       },
       calculatedDistance: {
         type: SchemaTypes.Number,
         required: false
       }
-    }, options).index({ origin: '2dsphere' });
+    }, options);
   }
 
   setHandlers() {
     this.methods.forEach(method => {
-      if (method.name === 'get') {
+      if (method.name === Method.GET) {
         method.handlers = [...method.handlers || [], this.aggregateData]
       }
 
-      if (method.name === 'post') {
+      if (method.name === Method.POST) {
         method.handlers = [...method.handlers || [], this.verifyCarExists]
       }
-    })
+    });
   }
 
   async aggregateData(req: Request, res: Response, next: NextFunction) {
@@ -70,15 +72,11 @@ export class CarSharesRoute extends BaseRoute {
       let aggregatedDataToUse = undefined;
 
       if (req.query.ownerId) {
-        query = { ownerId: mongoose.Types.ObjectId(req.query.ownerId) };
+        query = { ownerId: Types.ObjectId(req.query.ownerId) };
       }
 
       if (req.query.lng && req.query.lat && req.query.distance) {
         const { lng, lat, distance } = req.query;
-
-        console.log(
-          'Looking at lng: ' + lng + ' and lat: ' + lat + ' with a distance of ' + distance
-        )
 
         locationQuery = {
           near: {
@@ -94,30 +92,24 @@ export class CarSharesRoute extends BaseRoute {
 
       const fieldsToProject = {
         origin: {
-          coordinates: 1
+          coordinates: 1,
+          type: 1
         },
         destination: {
-          coordinates: 1
+          coordinates: 1,
+          type: 1
         },
         price: 1,
-        carInformation: {
-          _id: 1,
-          passengers: 1,
-          rules: 1,
-          make: 1
-        },
+        carInformation: carInformationDefinition,
         runningDays: 1,
-        ownerInformation: {
-          _id: 1,
-          username: 1
-        },
+        ownerInformation: ownerInformationDefintion,
         createdAt: 1,
         updatedAt: 1,
         distance: 1
       };
 
       if (locationQuery) {
-        aggregatedDataToUse = await mongoose.models.CarShares.aggregate([
+        aggregatedDataToUse = await models.CarShares.aggregate([
           {
             $geoNear: locationQuery
           },
@@ -146,7 +138,7 @@ export class CarSharesRoute extends BaseRoute {
           }
         ]).project(fieldsToProject).sort({ createdAt: 'desc' })
       } else {
-        aggregatedDataToUse = await mongoose.models.CarShares.aggregate([
+        aggregatedDataToUse = await models.CarShares.aggregate([
           { $match: query ? query : {} },
           {
             $lookup: {
@@ -183,7 +175,7 @@ export class CarSharesRoute extends BaseRoute {
     const { carId } = req.body
 
     try {
-      const document = await mongoose.models.Cars.findById(carId)
+      const document = await models.Cars.findById(carId)
       if (document) {
         req.body.ownerId = new ObjectId(document.ownerId)
         next()

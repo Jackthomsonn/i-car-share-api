@@ -1,7 +1,9 @@
 import { NextFunction, Request, Response } from 'express-serve-static-core';
-import { Schema, SchemaTypes, SchemaOptions, Types } from 'mongoose';
+import { models, Schema, SchemaOptions, SchemaTypes, Types } from 'mongoose';
+import { carShareInformationDefintion } from '../../definitions/car-share-information/car-share-information.defintion';
+import { Method } from '../../enums/methods';
 import { BaseRoute } from '../base-route';
-import mongoose from 'mongoose'
+import { carInformationDefinition } from './../../definitions/car-information/car-information.definition';
 
 export class ReviewsRoute extends BaseRoute {
   constructor(uri: string, methods: any[]) {
@@ -24,18 +26,18 @@ export class ReviewsRoute extends BaseRoute {
       },
       carShareId: {
         type: Types.ObjectId,
-        required: false
+        required: true
       }
     }, options)
   }
 
   setHandlers() {
     this.methods.forEach(method => {
-      if (method.name === 'get') {
+      if (method.name === Method.GET) {
         method.handlers = [...method.handlers || [], this.aggregateData]
       }
 
-      if (method.name === 'post') {
+      if (method.name === Method.POST) {
         method.handlers = [...method.handlers || [], this.verifyCarShareExists]
       }
     })
@@ -43,7 +45,7 @@ export class ReviewsRoute extends BaseRoute {
 
   async aggregateData(req: Request, res: Response, next: NextFunction) {
     try {
-      const aggregatedData = await mongoose.models.Reviews.aggregate([
+      const aggregatedData = await models.Reviews.aggregate([
         { $match: req.query },
         {
           $lookup: {
@@ -67,22 +69,8 @@ export class ReviewsRoute extends BaseRoute {
       ]).project({
         rating: 1,
         message: 1,
-        carShareInformation: {
-          origin: {
-            coordinates: 1
-          },
-          destination: {
-            coordinates: 1
-          },
-          price: 1
-        },
-        car: {
-          rules: 1,
-          ownerId: 1,
-          passengers: 1,
-          reg: 1,
-          make: 1
-        },
+        carShareInformation: carShareInformationDefintion,
+        carInformation: carInformationDefinition,
         createdAt: 1,
         updatedAt: 1
       })

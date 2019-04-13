@@ -1,6 +1,7 @@
 import express, { Express } from 'express';
 import { connect } from 'mongoose';
 import { config } from './config/config';
+import { socket } from './config/socket';
 
 const cors = require('cors');
 
@@ -9,6 +10,8 @@ const { XAuth } = require('x-auth-plugin')
 
 export class Application {
   private app: Express = express()
+  private http = require('http').Server(this.app);
+  private io = require('socket.io')(this.http);
 
   constructor(private routes: any[]) {
     this.activate()
@@ -40,12 +43,16 @@ export class Application {
     })
   }
 
+  private setupSocket() {
+    socket(this.io);
+  }
+
   private async activate() {
     this.setupXAuthProps()
 
     await connect(config.MONGO_URI, config.MONGO_OPTIONS)
 
-    this.app.use(cors())
+    this.app.use(cors({ credentials: true, origin: 'http://192.168.0.32:8100' }))
 
     new RouteGenerator({
       routes: this.routes,
@@ -54,8 +61,14 @@ export class Application {
         pre: [XAuth],
         post: []
       }
-    })
+    });
 
-    this.app.listen(config.PORT)
+    this.app.get('/test', () => {
+      this.io.emit('location:reached')
+    });
+
+    this.setupSocket();
+
+    this.http.listen(config.PORT)
   }
 }
