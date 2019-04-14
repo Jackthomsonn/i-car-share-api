@@ -46,9 +46,9 @@ export class BookingsRoute extends BaseRoute {
     try {
       let aggregatedData;
 
-      if (req.query.carShareId) {
+      if (req.query.userId) {
         aggregatedData = await models.Bookings.aggregate([
-          { $match: { carShareId: Types.ObjectId(req.query.carShareId) } },
+          { $match: { userId: Types.ObjectId(req.query.userId) } },
           {
             $lookup: {
               from: 'carshares',

@@ -20,6 +20,9 @@ const carSharesRoute = new CarSharesRoute('/car-shares', [
   }, {
     name: Method.PUT,
     handlers: [CheckAuthentication]
+  }, {
+    name: Method.DELETE,
+    handlers: [CheckAuthentication]
   }
 ])
 
@@ -45,7 +48,8 @@ const reviewsRoute = new ReviewsRoute('/reviews', [
 
 const bookingsRoute = new BookingsRoute('/bookings', [
   {
-    name: Method.GET
+    name: Method.GET,
+    handlers: [CheckAuthentication]
   }, {
     name: Method.POST,
     handlers: [CheckAuthentication]

@@ -38,7 +38,7 @@ export class CarSharesRoute extends BaseRoute {
         required: true
       },
       runningDays: {
-        type: SchemaTypes.String,
+        type: SchemaTypes.Mixed,
         enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
         required: true
       },
