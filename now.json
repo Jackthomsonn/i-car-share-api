@@ -1,0 +1,8 @@
+{
+  "builds": [
+    {
+      "src": "build/*.js",
+      "use": "@now/node"
+    }
+  ]
+}
