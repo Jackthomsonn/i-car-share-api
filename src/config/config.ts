@@ -6,12 +6,7 @@ export const config = {
   PORT: process.env.PORT || 8080,
   MONGO_URI: process.env.MONGO_URI || 'mongodb://localhost:27017/i-car-share',
   MONGO_OPTIONS: {
-    useNewUrlParser: true,
-    autoIndex: false,
-    reconnectTries: 30,
-    reconnectInterval: 500,
-    poolSize: 10,
-    bufferMaxEntries: 0
+    useNewUrlParser: true
   },
 
   // Auth Specific Config

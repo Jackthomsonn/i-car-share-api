@@ -11,7 +11,7 @@ const { XAuth } = require('x-auth-plugin')
 export class Application {
   private app: Express = express()
   private http = require('http').Server(this.app);
-  private io = require('socket.io')(this.http);
+  private io = require('socket.io')(this.http, { serveClient: false });
 
   constructor(private routes: any[]) {
     this.activate()
