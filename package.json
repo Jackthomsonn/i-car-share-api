@@ -4,7 +4,7 @@
   "description": "The Official ICarShare API",
   "main": "index.js",
   "scripts": {
-    "build": "npm i tsc -g && tsc",
+    "build": "npm i typescript -g && tsc",
     "build:dev": "tsc --watch",
     "test": "npm test",
     "docker:start": "docker-compose up --build -d",
