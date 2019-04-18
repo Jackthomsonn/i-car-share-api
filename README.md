@@ -2,11 +2,15 @@
 
 **Terminal Window (cwd)**
 ```
+docker-compose build
+docker-compose up -d
+docker-compose exec i-car-share bash
 npm run build:dev
 ```
 
 **Second Terminal Window (cwd)**
 ```
+docker-compose exec i-car-share bash
 nodemon build
 ```
 
