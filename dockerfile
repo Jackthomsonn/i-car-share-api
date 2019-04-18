@@ -2,9 +2,11 @@ FROM node:10
 WORKDIR /usr/src/app
 
 COPY package.json /usr/src/app
-RUN npm install
-COPY /build /usr/src/app
+RUN npm install && \
+  npm install nodemon -g && \
+  npm install typescript -g
+COPY . /usr/src/app
 
-CMD node index.js
+CMD tail -f /dev/null
 
 EXPOSE 8080

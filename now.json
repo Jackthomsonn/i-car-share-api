@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "name": "ICarShare",
+  "alias": "icarshare.io",
+  "builds": [
+    {
+      "src": "build/index.js",
+      "use": "@now/node-server"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.+)",
+      "dest": "build/index.js"
+    }
+  ],
+  "env": {
+    "MONGO_URI": "@mongo_uri",
+    "LOG_ENV": "@log_env"
+  }
+}

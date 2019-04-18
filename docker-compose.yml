@@ -1,15 +1,14 @@
 version: "3"
 services:
-  hitch-hike:
-    container_name: hitch-hike
-    restart: always
+  i-car-share:
+    container_name: i-car-share
     build: .
     ports:
       - "8080:8080"
     links:
       - mongo
     environment:
-      MONGO_URI: 'mongodb://mongo:27017/hitch-hike'
+      MONGO_URI: 'mongodb://mongo:27017/i-car-share'
   mongo:
     container_name: mongo
     image: mongo
