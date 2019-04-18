@@ -4,7 +4,7 @@ export const config = {
   APPLICATION_LOGO: 'http://www.stickpng.com/assets/images/5847f9cbcef1014c0b5e48c8.png',
   APPLICATION_NAME: 'ICarShare',
   PORT: process.env.PORT || 8080,
-  MONGO_URI: process.env.MONGO_URI || 'mongodb://localhost:27017/i-car-share',
+  MONGO_URI: process.env.MONGO_URI,
   MONGO_OPTIONS: {
     useNewUrlParser: true,
     autoIndex: false,

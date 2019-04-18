@@ -10,6 +10,7 @@
     "docker:start": "docker-compose up --build -d",
     "docker:stop": "cli-confirm \"Stopping the docker server will remove everything including any data. Are you sure you wish to do this?\" && docker-compose down"
   },
+  "repository": "https://github.com/Jackthomsonn/i-car-share-api",
   "author": "Jack Thomson <hello@jackthomson.co.uk> (http://www.jackthomson.co.uk)",
   "license": "ISC",
   "dependencies": {
@@ -21,7 +22,7 @@
     "node-pushnotifications": "^1.1.8",
     "request": "^2.88.0",
     "socket.io": "^2.2.0",
-    "x-auth-plugin": "0.4.0"
+    "x-auth-plugin": "^0.3.4"
   },
   "devDependencies": {
     "@types/cors": "^2.8.4",
@@ -29,6 +30,9 @@
     "@types/mongoose": "^5.3.21",
     "@types/request": "^2.48.1",
     "@types/socket.io": "^2.1.2",
-    "cli-confirm": "^1.0.1"
+    "chalk": "^2.4.2",
+    "cli-confirm": "^1.0.1",
+    "winston": "^3.2.1",
+    "winston-loggly-bulk": "^3.0.1"
   }
 }

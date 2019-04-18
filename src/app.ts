@@ -1,10 +1,14 @@
+import { NextFunction } from 'connect';
 import express, { Express } from 'express';
+import { Request, Response } from 'express-serve-static-core';
 import { connect } from 'mongoose';
+import * as winston from 'winston';
 import { config } from './config/config';
 import { socket } from './config/socket';
 
 const cors = require('cors');
 
+const { Loggly } = require('winston-loggly-bulk');
 const { RouteGenerator } = require('dynamic-route-generator')
 const { XAuth } = require('x-auth-plugin')
 
@@ -68,6 +72,25 @@ export class Application {
     });
 
     this.setupSocket();
+
+    winston.add(new Loggly({
+      token: "fbea1a66-aa1c-4501-a1ce-35cf4ad9e2f8",
+      subdomain: "testshare.loggly.com",
+      tags: ["ICarShare"],
+      json: true
+    }));
+
+    const logErrors = (err: any, _req: Request, res: Response, _next: NextFunction) => {
+      console.log('**ERROR**', err.message);
+      winston.log('info', err.stack);
+      res.setHeader('Content-Type', 'application/json');
+      res.status(err.status).send({
+        message: err.message,
+        status: err.status
+      });
+    }
+
+    this.app.use(logErrors);
 
     this.http.listen(config.PORT)
   }
