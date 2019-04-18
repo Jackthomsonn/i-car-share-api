@@ -4,8 +4,8 @@
   "description": "The Official ICarShare API",
   "main": "index.js",
   "scripts": {
-    "build": "tsc --watch",
-    "build:prod": "tsc",
+    "build": "npm i tsc -g && tsc",
+    "build:dev": "tsc --watch",
     "test": "npm test",
     "docker:start": "docker-compose up --build -d",
     "docker:stop": "cli-confirm \"Stopping the docker server will remove everything including any data. Are you sure you wish to do this?\" && docker-compose down"
