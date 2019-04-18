@@ -7,6 +7,7 @@
     "build": "npm i typescript -g && tsc",
     "build:dev": "tsc --watch",
     "test": "npm test",
+    "start": "node build/index",
     "docker:start": "docker-compose up --build -d",
     "docker:stop": "cli-confirm \"Stopping the docker server will remove everything including any data. Are you sure you wish to do this?\" && docker-compose down"
   },
