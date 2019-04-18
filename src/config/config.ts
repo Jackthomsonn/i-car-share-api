@@ -8,6 +8,7 @@ export const config = {
   MONGO_OPTIONS: {
     useNewUrlParser: true
   },
+  LOG_ENV: process.env.LOG_ENV || 'development-logs',
 
   // Auth Specific Config
   AUTH_SECRET_KEY: '12345',

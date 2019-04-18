@@ -72,7 +72,7 @@ export class Application {
     winston.add(new Loggly({
       token: "fbea1a66-aa1c-4501-a1ce-35cf4ad9e2f8",
       subdomain: "i-car-share",
-      tags: ["Info Logs"],
+      tags: [config.LOG_ENV],
       json: true
     }));
 
@@ -87,8 +87,9 @@ export class Application {
       }
     });
 
-    this.app.get('/test', () => {
+    this.app.get('/test', (_req, res) => {
       this.io.emit('location:reached')
+      res.status(200).send();
     });
 
     this.handleApplicationErrors();
