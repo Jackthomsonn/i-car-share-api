@@ -3,8 +3,10 @@ import { connect } from 'mongoose';
 import { config } from './config/config';
 import { socket } from './config/socket';
 
+const winston = require('winston');
 const cors = require('cors');
 
+const { Loggly } = require('winston-loggly-bulk');
 const { RouteGenerator } = require('dynamic-route-generator')
 const { XAuth } = require('x-auth-plugin')
 
@@ -47,10 +49,32 @@ export class Application {
     socket(this.io);
   }
 
+  private handleApplicationErrors() {
+    this.app.use((err: any, _req: any, res: any, _next: any) => {
+      res.status(err.status).send({
+        message: err.message,
+        status: err.status
+      });
+
+      winston.log('error', {
+        message: err.message,
+        status: err.status,
+        stack: err.stack
+      });
+    });
+  }
+
   private async activate() {
     this.setupXAuthProps()
 
     await connect(config.MONGO_URI, config.MONGO_OPTIONS)
+
+    winston.add(new Loggly({
+      token: "fbea1a66-aa1c-4501-a1ce-35cf4ad9e2f8",
+      subdomain: "i-car-share",
+      tags: ["Info Logs"],
+      json: true
+    }));
 
     this.app.use(cors({ credentials: true, origin: 'http://192.168.0.32:8100' }))
 
@@ -66,6 +90,8 @@ export class Application {
     this.app.get('/test', () => {
       this.io.emit('location:reached')
     });
+
+    this.handleApplicationErrors();
 
     this.setupSocket();
 
