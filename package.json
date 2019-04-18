@@ -4,7 +4,7 @@
   "description": "The Official ICarShare API",
   "main": "index.js",
   "scripts": {
-    "build": "npm i typescript -g && tsc",
+    "build": "tsc",
     "build:dev": "tsc --watch",
     "test": "npm test",
     "start": "node build/index",

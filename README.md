@@ -1,14 +1,16 @@
-# Instructions
+## **How to get the app running locally**
 
-## When first running the app
-Open a terminal and run the following commands:
-
+**Terminal Window (cwd)**
 ```
-cd i-car-share-api
-docker-compose up -d
-mongo
-use i-car-share
-db.carshares.createIndex( { origin : "2dsphere" }
+npm run build:dev
 ```
 
-#### The services should be up and running now! Open http://localhost:8080 in postman and start hitting the endpoints
+**Second Terminal Window (cwd)**
+```
+nodemon build
+```
+
+Make sure you have mongo installed locally
+
+## **How to deploy**
+Create a PR. When the PR is approved and get merged in, a new release will be deployed in a few minutes.

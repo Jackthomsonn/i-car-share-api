@@ -96,6 +96,9 @@ export class Application {
 
     this.setupSocket();
 
-    this.http.listen(config.PORT)
+    this.http.listen(config.PORT, () => {
+      console.log('Listening');
+      console.log(this.routes);
+    })
   }
 }
