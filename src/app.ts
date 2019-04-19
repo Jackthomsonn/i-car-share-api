@@ -50,6 +50,7 @@ export class Application {
   }
 
   private handleApplicationErrors() {
+    console.log('Handle');
     this.app.use((err: any, _req: any, res: any, _next: any) => {
       res.status(err.status).send({
         message: err.message,
