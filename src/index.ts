@@ -51,13 +51,13 @@ const reviewsRoute = new ReviewsRoute('/reviews', [
 const bookingsRoute = new BookingsRoute('/bookings', [
   {
     name: Method.GET,
-    handlers: []
+    handlers: [CheckAuthentication]
   }, {
     name: Method.POST,
-    handlers: []
+    handlers: [CheckAuthentication]
   }, {
     name: Method.DELETE,
-    handlers: []
+    handlers: [CheckAuthentication]
   }
 ])
 
@@ -98,11 +98,11 @@ const socketsRoute = new SocketsRoute('/sockets', [
 const messagesRoute = new MessagesRoute('/messages', [
   {
     name: Method.POST,
-    handlers: []
+    handlers: [CheckAuthentication]
   },
   {
     name: Method.GET,
-    handlers: []
+    handlers: [CheckAuthentication]
   }
 ]);
 
