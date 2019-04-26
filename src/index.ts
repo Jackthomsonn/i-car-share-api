@@ -15,10 +15,10 @@ const { CheckAuthentication } = require('x-auth-plugin')
 const carSharesRoute = new CarSharesRoute('/car-shares', [
   {
     name: Method.GET,
-    handlers: []
+    handlers: [CheckAuthentication]
   }, {
     name: Method.POST,
-    handlers: []
+    handlers: [CheckAuthentication]
   }, {
     name: Method.PUT,
     handlers: [CheckAuthentication]
