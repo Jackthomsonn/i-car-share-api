@@ -51,7 +51,7 @@ export class Application {
 
   private handleApplicationErrors() {
     this.app.use((err: any, _req: any, res: any, _next: any) => {
-      res.status(err.status).send({
+      res.status(err.status || 500).send({
         message: err.message,
         status: err.status
       });
@@ -76,7 +76,7 @@ export class Application {
       json: true
     }));
 
-    this.app.use(cors({ credentials: true, origin: 'http://192.168.0.32:8100' }))
+    this.app.use(cors())
 
     new RouteGenerator({
       routes: this.routes,
@@ -96,9 +96,6 @@ export class Application {
 
     this.setupSocket();
 
-    this.http.listen(config.PORT, () => {
-      console.log('Listening');
-      console.log(this.routes);
-    })
+    this.http.listen(config.PORT)
   }
 }

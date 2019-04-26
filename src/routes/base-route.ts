@@ -1,10 +1,10 @@
-import { Schema, model, SchemaOptions, Types } from 'mongoose';
-import { IBaseRoute } from '../interfaces/IBaseRoute';
-import { Response, NextFunction } from 'express-serve-static-core';
-import mongoose from 'mongoose'
+import { NextFunction, Response } from 'express-serve-static-core';
+import mongoose, { model, Schema, SchemaOptions, Types } from 'mongoose';
 import { Exceptions } from '../enums/exceptions';
+import { IBaseRoute } from '../interfaces/IBaseRoute';
 
-const { NotFound, InternalServerError } = require('dynamic-route-generator')
+const { NotFound, InternalServerError, Unauthorized } = require('dynamic-route-generator')
+const jwt = require('jsonwebtoken')
 
 export abstract class BaseRoute implements IBaseRoute {
   constructor(protected uri: string, protected methods: any[]) { }
@@ -28,6 +28,27 @@ export abstract class BaseRoute implements IBaseRoute {
       model: model(this.constructor.name.split('Route')[0], this.setSchema({ timestamps: true })),
       methods: this.methods,
       handlers: this.setGlobalHandlers()
+    }
+  }
+
+  async verifyRequestIsForUser(req: any, _res: Response, next: NextFunction) {
+    if (!req.headers.authorization) {
+      next(new Unauthorized());
+    }
+
+    const token = req.headers.authorization.split('Bearer ')[1];
+
+    try {
+      const decodedToken = jwt.decode(token);
+      const user = await mongoose.connection.db.collection('users').findOne({ username: decodedToken.data.username });
+
+      if (user._id == req.query.senderId) {
+        next()
+      } else {
+        next(new Unauthorized(Exceptions.DOES_NOT_BELONG_TO_YOU))
+      }
+    } catch (err) {
+      next(new InternalServerError(err))
     }
   }
 

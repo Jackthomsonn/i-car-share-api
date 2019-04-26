@@ -33,7 +33,7 @@ export class BookingsRoute extends BaseRoute {
       }
 
       if (method.name === Method.POST) {
-        method.handlers = [...method.handlers || [], this.verifyUserExists, this.verifyCarShareExists, this.verifyUserIsNotAlreadyBookedOntoCarShare]
+        method.handlers = [...method.handlers || [], this.verifyCarShareExists, this.verifyUserIsNotAlreadyBookedOntoCarShare]
       }
     })
   }
