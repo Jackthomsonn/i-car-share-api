@@ -105,7 +105,10 @@ export class CarSharesRoute extends BaseRoute {
         ownerInformation: ownerInformationDefintion,
         createdAt: 1,
         updatedAt: 1,
-        distance: 1
+        distance: 1,
+        totalBookedOnPassengers: {
+          $size: "$totalBookedOnPassengers"
+        }
       };
 
       if (locationQuery) {
@@ -120,6 +123,14 @@ export class CarSharesRoute extends BaseRoute {
               localField: 'carId',
               foreignField: '_id',
               as: 'carInformation'
+            }
+          },
+          {
+            $lookup: {
+              from: 'bookings',
+              localField: '_id',
+              foreignField: 'carShareId',
+              as: 'totalBookedOnPassengers'
             }
           },
           {
@@ -147,6 +158,14 @@ export class CarSharesRoute extends BaseRoute {
               foreignField: '_id',
               as: 'carInformation'
             }
+          },
+          {
+            $lookup: {
+              from: 'bookings',
+              localField: '_id',
+              foreignField: 'carShareId',
+              as: 'totalBookedOnPassengers'
+            },
           },
           {
             $lookup: {

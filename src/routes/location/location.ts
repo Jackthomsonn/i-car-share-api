@@ -52,7 +52,7 @@ export class LocationsRoute extends BaseRoute {
 
           res.status(200).send();
         } catch (error) {
-          throw new Error(error);
+          throw new InternalServerError(error);
         }
       }
     } catch (err) {
