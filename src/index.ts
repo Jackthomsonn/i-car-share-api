@@ -87,7 +87,7 @@ const locationsRoute = new LocationsRoute('/locations', [
 const socketsRoute = new SocketsRoute('/sockets', [
   {
     name: Method.POST,
-    handlers: [CheckAuthentication]
+    handlers: []
   },
   {
     name: Method.GET,
