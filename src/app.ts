@@ -94,8 +94,8 @@ export class Application {
 
     this.handleApplicationErrors();
 
-    this.setupSocket();
+    this.http.listen(config.PORT);
 
-    this.http.listen(config.PORT)
+    this.setupSocket();
   }
 }
