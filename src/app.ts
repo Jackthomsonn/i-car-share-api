@@ -14,7 +14,8 @@ export class Application {
   private app: Express = express()
   private http = require('http').Server(this.app);
   private io = require('socket.io')(this.http, {
-    serveClient: false
+    serveClient: false,
+    origins: '*:*'
   });
 
   constructor(private routes: any[]) {
