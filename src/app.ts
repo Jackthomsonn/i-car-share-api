@@ -15,7 +15,7 @@ export class Application {
   private http = require('http').Server(this.app);
   private io = require('socket.io')(this.http, {
     serveClient: false,
-    transports: ['websocket']
+    transports: ['polling']
   });
 
   constructor(private routes: any[]) {
